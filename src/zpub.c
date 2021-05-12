@@ -16,12 +16,15 @@ int main (void)
     int update_nbr;
     for(update_nbr = 0; update_nbr < 10000; update_nbr++) {
         int temperature, relhumidity;
+        
         temperature = randof (215) - 80;
         relhumidity = randof (50) + 10;
 
+
         //  Send message to all subscribers
         char update [20];
-        sprintf (update, "%d %d", temperature, relhumidity);
+        // sprintf (update, "%d %d", temperature, relhumidity);
+        sprintf (update, "%d", update_nbr);
         s_send (publisher, update);
     }
     zmq_close (publisher);

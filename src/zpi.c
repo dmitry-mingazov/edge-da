@@ -22,9 +22,17 @@ int main (int argc, char *argv [])
         // it should crop the data and send it to subscriber
         
         int temperature, relhumidity;
-        sscanf (string, "%d %d",
-            &temperature, &relhumidity);
-        printf("temp: %d - hum: %d\n", temperature, relhumidity);
+        // sscanf (string, "%d %d",
+            // &temperature, &relhumidity);
+        sscanf (string, "%d",
+            &temperature);
+        if (update_nbr == 0) {
+            printf("n. %d\n", temperature);
+        } else if (update_nbr == 999) {
+            printf("n. %d\n", temperature);
+        }
+        // printf("temp: %d - hum: %d\n", temperature, relhumidity);
+        // printf("n. %d\n", temperature);
         free (string);
     }
 
