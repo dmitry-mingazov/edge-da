@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  zpub:
+    build:
+      context: .
+      target: zpub
+    image: edgeda:zpub
+  zpi:
+    build:
+      context: .
+      target: zpi
+    image: edgeda:zpi
+  zsub:
+    build:
+      context: .
+      target: zsub
+    image: edgeda:zsub
