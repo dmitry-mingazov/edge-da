@@ -20,11 +20,11 @@ int main (void)
         temperature = randof (215) - 80;
         relhumidity = randof (50) + 10;
 
-
+        usleep(1);
         //  Send message to all subscribers
         char update [20];
-        // sprintf (update, "%d %d", temperature, relhumidity);
-        sprintf (update, "%d", update_nbr);
+        sprintf (update, "%d %d", update_nbr, relhumidity);
+        // sprintf (update, "%d", update_nbr);
         s_send (publisher, update);
     }
     zmq_close (publisher);

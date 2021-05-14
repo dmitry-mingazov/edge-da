@@ -17,15 +17,15 @@ int main (int argc, char *argv [])
 
     //  Process 1000 updates
     int update_nbr;
-    for (update_nbr = 0; update_nbr < 1000; update_nbr++) {
+    for (update_nbr = 0; update_nbr < 100000; update_nbr++) {
         char *string = s_recv (subscriber);
 
         // it should save the data received to local SQL lite server
 
-        int temperature, relhumidity;
-        sscanf (string, "%d %d",
-            &temperature, &relhumidity);
-        printf("temp: %d - hum: %d\n", temperature, relhumidity);
+        int temperature;
+        sscanf (string, "%d",
+            &temperature);
+        printf("temp: %d\n", temperature);
 
         free (string);
     }
