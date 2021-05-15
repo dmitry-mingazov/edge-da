@@ -1,17 +1,42 @@
 version: '3.7'
 services:
-  zpub:
+  zpub: 
+    container_name: zpub
+    image: edgeda:zpub
+    environment:
+      - PORT=${PUBPI_PORT}
     build:
       context: .
       target: zpub
-    image: edgeda:zpub
-  zpi:
+    networks: 
+      - pubpi
+  zpi: 
+    container_name: zpi
+    image: edgeda:zpi
+    environment:
+      - PORT_IN=${PUBPI_PORT}
+      - PORT_OUT=${PISUB_PORT}
     build:
       context: .
       target: zpi
-    image: edgeda:zpi
-  zsub:
+    networks:
+      - pubpi
+      - pisub
+  zsub: 
+    container_name: zsub
+    image: edgeda:zsub
+    environment:
+      - PORT=${PISUB_PORT}
     build:
       context: .
       target: zsub
-    image: edgeda:zsub
+    networks:
+      - pisub
+
+networks:
+  pubpi:
+    name: pub-to-pi
+    driver: bridge
+  pisub:
+    name: pi-to-sub
+    driver: bridge

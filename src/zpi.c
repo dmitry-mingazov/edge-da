@@ -7,7 +7,7 @@ int main (int argc, char *argv [])
     //  Socket to talk to server
     void *context = zmq_ctx_new ();
     void *subscriber = zmq_socket (context, ZMQ_SUB);
-    int rc = zmq_connect (subscriber, "tcp://localhost:5556");
+    int rc = zmq_connect (subscriber, "tcp://zpub:5556");
     assert (rc == 0);
 
     int *publisher = zmq_socket (context, ZMQ_PUB);

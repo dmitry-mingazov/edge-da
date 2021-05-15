@@ -19,7 +19,7 @@ int main (void)
         
         temperature = randof (215) - 80;
         relhumidity = randof (50) + 10;
-	printf("%d %d", update_nbr, relhumidity);
+	printf("%d %d\n", update_nbr, relhumidity);
         usleep(1);
         //  Send message to all subscribers
         char update [20];
