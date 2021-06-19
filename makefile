@@ -9,13 +9,12 @@ OUTDIR = out
 OUTS = $(patsubst $(SRCDIR)/%.c, $(OUTDIR)/%, $(SRC))
 
 CCFLAGS = -Wall -g
-ZMQ = -lzmq
-
+LINKS = -lzmq -lsqlite3
 
 all: $(OUTDIR) $(OUTS)
 
 $(OUTDIR)/%: $(SRCDIR)/%.c
-	$(CC) $(CCFLAGS) $< $(ZMQ) -o $@
+	$(CC) $(CCFLAGS) $< $(LINKS) -o $@
 
 $(OUTDIR):
 	$(MKDIR) $(OUTDIR)

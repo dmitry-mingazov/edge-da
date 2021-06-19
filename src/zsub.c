@@ -1,9 +1,23 @@
-//  Connects SUB socket to tcp://localhost:5557
+//  Connects SUB socket to tcp://zpi:5557
 
 #include "zhelpers.h"
+#include "sqlite3.h"
 
 int main (int argc, char *argv [])
-{
+{   
+    sqlite3 *db;
+    sqlite3_stmt *res;
+    
+    int sqlrc = sqlite3_open(":memory:", &db);
+    
+    if (sqlrc != SQLITE_OK) {
+        
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        
+        return 1;
+    }
+
     //  Socket to talk to server
     void *context = zmq_ctx_new ();
     void *subscriber = zmq_socket (context, ZMQ_SUB);

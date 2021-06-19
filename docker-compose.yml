@@ -1,5 +1,11 @@
 version: '3.7'
 services:
+  build-env:
+    container_name: build-env
+    image: edgeda:build-env
+    build:
+      context: .
+      target: build-env
   zpub: 
     container_name: zpub
     image: edgeda:zpub
