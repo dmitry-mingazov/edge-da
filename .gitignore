@@ -1,1 +1,14 @@
 out/
+.deps
+.libs
+src/sqlite/config.log
+src/sqlite/config.status
+src/sqlite/Makefile
+src/sqlite/libtool
+src/sqlite/libsqlite3.la
+sqlite3
+sqlite3-shell.o
+sqlite3-sqlite3.o
+sqlite3.lo
+sqlite3.o
+sqlite3.pc
