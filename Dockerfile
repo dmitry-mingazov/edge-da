@@ -1,5 +1,5 @@
 FROM alpine as build-env
-RUN apk add --no-cache autoconf gcc alpine-sdk libzmq zeromq-dev zeromq coreutils build-base sqlite-dev musl-dev libc-dev
+RUN apk add --no-cache autoconf gcc alpine-sdk libzmq zeromq-dev zeromq coreutils build-base libuuid util-linux util-linux-dev sqlite-dev musl-dev libc-dev
 WORKDIR /app
 COPY . .
 # Set up SQLite
@@ -10,7 +10,7 @@ COPY . .
 RUN make
 FROM alpine as zpub
 COPY --from=build-env /app/out/* /app/
-RUN apk add libzmq 
+RUN apk add libzmq libuuid
 WORKDIR /app
 RUN chmod +x /app/*
 CMD ["/app/zpub"]
