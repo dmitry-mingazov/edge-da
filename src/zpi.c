@@ -2,6 +2,46 @@
 
 #include "zhelpers.h"
 #include "jsmn.h"
+#include <string.h>
+
+typedef struct s_payload {
+    char *ref;
+    char* k;
+    double v;
+    char* u;
+    char* tz;
+} payload;
+
+void str_append(char** dest, char* src) {
+    char* tmp;
+    int size = (strlen(*dest) + strlen(src) + 1) * sizeof(char);
+    // printf("%d - %d - %d\n", size, strlen(*dest), strlen(src));
+
+    if (!(tmp = realloc(*dest, size))) {
+        fprintf(stderr, "Out of memory!");
+        exit(1);
+    }
+    *dest = tmp;
+    // printf("%s\n", *dest);
+    strcat(*dest, src);
+}
+
+char* get_token_str(char* json, jsmntok_t curr_tok) {
+    char* res;
+    int curr_tok_len = curr_tok.end - curr_tok.start;
+    // char* curr_tok_str = malloc(curr_tok_len * sizeof(char));
+    switch(curr_tok.type) {
+        case JSMN_STRING:
+            res = malloc((curr_tok_len + 2) * sizeof(char));
+            res = strndup(json + curr_tok.start - 1, curr_tok_len+2);
+            break;
+        default:
+            res = malloc(curr_tok_len * sizeof(char));
+            res = strndup(json + curr_tok.start, curr_tok_len);
+    }
+
+    return res;
+}
 
 int main (int argc, char *argv [])
 {
@@ -46,19 +86,101 @@ int main (int argc, char *argv [])
     jsmntok_t curr_tok; 
 
     int key = 1;
-    printf("%d\n", n_tokens);
+    int m_array = 0;
+    char* valuables[] = {
+        "\"ref\"",
+        "\"k\"",
+        "\"v\"",
+        "\"tz\"",
+        "\"u\"",
+    };
+
+    int mark[] = {
+        01,
+        02,
+        04,
+        010,
+        020
+    };
+    int n_valuables = (sizeof(valuables) / sizeof(const char*));
+    int MARK_TOT = 0;
+    int curr_mark;
+    for(int i = 0; i < n_valuables; i++) {
+        MARK_TOT |= mark[i];
+    }
+    int save_value = 0;
+    char* curr_key;
+    int curr_key_len;
+    char* start_json = "{\n";
+    char* mid_json = ",\n";
+    char* end_json = "\n}";
+
+    // printf("%d\n", n_tokens);
+    printf("%d\n", MARK_TOT);
     // return 0;
+
+    char* curr_json = malloc(1);
+    // *curr_json = "";
+    // char* curr_json = "{\n";
 
     for(int i = 0; i < n_tokens; i++) {
         curr_tok = tokens[i];
         if (curr_tok.type == JSMN_STRING && key == 1) {
+            // curr_key_len = curr_tok.end - curr_tok.start;
+            // curr_key = malloc(curr_key_len * sizeof(char));
+            // curr_key = strndup(string + curr_tok.start, curr_key_len);
+            curr_key = get_token_str(string, curr_tok);
+            if (m_array) {
+                if (curr_mark == 0) {
+                    str_append(&curr_json, start_json);
+                } 
+                for (int j = 0; j < n_valuables; j++) {
+                    if (strcmp(curr_key, valuables[j]) == 0) {
+                        save_value = 1;
+                        curr_mark |= mark[j];
+                        break;
+                    }
+                }
+                if (!save_value) {
+                    continue;
+                }
+                // int size = (strlen(curr_json)+ curr_key_len + 1) * sizeof(char);
+                // char* tmp;
+                // if (!(tmp = realloc(curr_json, size))) {
+                //     fprintf(stderr, "Out of memory!");
+                //     exit(1);
+                // }
+                // curr_json = tmp;
+                // strcat(curr_json, curr_key);
+                str_append(&curr_json, curr_key);
+                str_append(&curr_json, ": ");
+                // printf("%s\n",curr_key);
+            } else if (strcmp(curr_key, "\"m\"") == 0) {
+                m_array = 1;
+                curr_mark = 0;
+            }
             // printf("%d - %d\n", curr_tok.start, curr_tok.end);
-            printf("%s\n", strndup(string + curr_tok.start, curr_tok.end - curr_tok.start));
+            // printf("%s\n", strndup(string + curr_tok.start, curr_tok.end - curr_tok.start));
             key = 0;
         } else {
+            if (save_value) {
+                save_value = 0;
+                char* curr_value = get_token_str(string, curr_tok);
+                str_append(&curr_json, curr_value);
+                if (curr_mark == MARK_TOT) {
+                    str_append(&curr_json, end_json);
+                    printf("%s\n", curr_json);
+                    curr_mark = 0;
+                    curr_json = malloc(1);
+                } else {
+                    str_append(&curr_json, mid_json);
+                }
+            }
             key = 1;
         }
     }
+
+    // printf("%s\n", curr_json);
 
     return 0;
     //  Socket to talk to server
