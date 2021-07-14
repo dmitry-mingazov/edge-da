@@ -90,37 +90,7 @@ int main(int argc, char **argv)
 		// Generate unique code t
 		int t = getRandomInt(100000000, 999999999);
 
-		sprintf(msg, "{ \"t\": %d, \"time\": \"%s\", \
-		\"ref\": \"jzp://edv#211b.0000\", \
-		\"uuid\": \"%s\", \
-		\"type\": \"Environmental\", \
-		\"m\": [ \
-				{ \
-				\"k\": \"environmental_temperature\", \
-				\"t\": %d, \
-				\"tz\": \"%s\", \
-				\"v\": %f, \
-				\"u\": \"°C\", \
-				\"ref\": \"jpz://edv#211b.0000/environmental_temperature\" \
-				}, \
-				{ \
-				\"k\": \"relative_humidity\", \
-				\"t\": %d, \
-				\"tz\": \"%s\", \
-				\"v\": %d, \
-				\"u\": \"%%\", \
-				\"ref\": \"jpz://edv#211b.0000/relative_humidity\" \
-				}, \
-				{ \
-				\"k\": \"battery_level\", \
-				\"t\": %d, \
-				\"tz\": \"%s\", \
-				\"v\": %d, \
-				\"u\": \"%%\", \
-				\"ref\": \"jpz://edv#211b.0000/battery_level\" \
-				}, \
-			   ], \
-		}", t, time, uuid, 
+		sprintf(msg, "{ \"t\": %d, \"time\": \"%s\", \"ref\": \"jzp://edv#211b.0000\", \"uuid\": \"%s\", \"type\": \"Environmental\", \"m\": [{ \"k\": \"environmental_temperature\", \"t\": %d, \"tz\": \"%s\", \"v\": %f, \"u\": \"°C\", \"ref\": \"jpz://edv#211b.0000/environmental_temperature\" }, { \"k\": \"relative_humidity\", \"t\": %d, \"tz\": \"%s\", \"v\": %d, \"u\": \"%%\", \"ref\": \"jpz://edv#211b.0000/relative_humidity\" }, { \"k\": \"battery_level\", \"t\": %d, \"tz\": \"%s\", \"v\": %d, \"u\": \"%%\", \"ref\": \"jpz://edv#211b.0000/battery_level\" }, ], }", t, time, uuid,
 		t, time, getRandomFloat(-5.0, 35.0), 
 		t, time, getRandomInt(5, 95),
 		t, time, getRandomInt(0, 100));
