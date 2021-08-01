@@ -13,3 +13,4 @@ sqlite3.lo
 sqlite3.o
 sqlite3.pc
 *.db
+.vscode/
