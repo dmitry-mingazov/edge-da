@@ -27,10 +27,11 @@ int main(int argc, char **argv)
 {
     //  Prepare context and publisher
     void *context = zmq_ctx_new ();
-    void *publisher = zmq_socket(context, ZMQ_PUB);
-    int rc = zmq_bind (publisher, "tcp://*:5556");
-    assert (rc == 0);
-	
+    void *sender = zmq_socket(context, ZMQ_PUSH);
+    int rb = zmq_bind (sender, "tcp://*:5556");
+
+	assert (rb == 0);
+
 	// Prepare to create and send messages
 	srand(time(0));
 	int is_quantity_opt_available = 0;
@@ -99,12 +100,12 @@ int main(int argc, char **argv)
 
 		printf("IoT device message #%d:\n---\n%s\n---\n\n", count, msg);
 		// Send message
-		s_send (publisher, msg);
+		s_send (sender, msg);
 		// Wait before sending another message
 		usleep(frequency);
 	}
 
-    zmq_close (publisher);
+    zmq_close (sender);
     zmq_ctx_destroy (context);
     return 0;
 }

@@ -141,18 +141,18 @@ int main (int argc, char *argv [])
 
     //  Socket to talk to server
     void *context = zmq_ctx_new ();
-    void *subscriber = zmq_socket (context, ZMQ_SUB);
-    int rc = zmq_connect (subscriber, "tcp://localhost:5557");
+    void *receiver = zmq_socket (context, ZMQ_PULL);
+    int rc = zmq_bind (receiver, "tcp://*:5558");
     assert (rc == 0);
 
     //  Subscribe to zipcode, default is NYC, 10001
-    rc = zmq_setsockopt (subscriber, ZMQ_SUBSCRIBE,
-                         "", 0);
-    assert (rc == 0);
+    // rc = zmq_setsockopt (receiver, ZMQ_SUBSCRIBE,
+    //                      "", 0);
+    // assert (rc == 0);
 
     //  Process updates
     for(;;) {
-        char *string = s_recv (subscriber);
+        char *string = s_recv (receiver);
         // it should save the data received to local SQL lite server
 
 // char* string = "{\"ref\":\"device\",\"k\":\""
@@ -180,7 +180,7 @@ int main (int argc, char *argv [])
         free (string);
     }
     sqlite3_close(db);
-    zmq_close (subscriber);
+    zmq_close (receiver);
     zmq_ctx_destroy (context);
     return 0;
 }

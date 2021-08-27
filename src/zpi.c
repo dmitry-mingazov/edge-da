@@ -21,17 +21,13 @@ int main (int argc, char *argv [])
 {
     //  Socket to talk to server
     void *context = zmq_ctx_new ();
-    void *subscriber = zmq_socket (context, ZMQ_SUB);
-    int rc = zmq_connect (subscriber, "tcp://localhost:5556");
+    void *receiver = zmq_socket (context, ZMQ_PULL);
+    int rc = zmq_connect (receiver, "tcp://localhost:5556");
     assert (rc == 0);
 
-    int *publisher = zmq_socket (context, ZMQ_PUB);
-    int pc = zmq_bind(publisher, "tcp://*:5557");
+    int *sender = zmq_socket (context, ZMQ_PUSH);
+    int pc = zmq_connect(sender, "tcp://localhost:5558");
     assert (pc == 0);
-
-    rc = zmq_setsockopt (subscriber, ZMQ_SUBSCRIBE,
-                         "", 0);
-    assert (rc == 0);
 
     char* valuables[] = {
         "\"ref\"",
@@ -57,7 +53,7 @@ int main (int argc, char *argv [])
     }
     for (;;) {
         char* buffer = malloc(1024 * sizeof(char));
-        zmq_recv(subscriber, buffer, 800, 0);
+        zmq_recv(receiver, buffer, 800, 0);
         size_t buf_size = strlen(buffer);
         char* in_json = malloc(buf_size * sizeof(char));
         strcpy(in_json, buffer);
@@ -111,7 +107,7 @@ int main (int argc, char *argv [])
                     if (curr_mark == MARK_TOT) {
                         str_append(&curr_json, end_json);
                         printf("%s\n", curr_json);
-                        s_send(publisher, curr_json);
+                        s_send(sender, curr_json);
                         free(curr_json);
                         curr_mark = 0;
                         curr_json = init_curr_json();
@@ -125,7 +121,7 @@ int main (int argc, char *argv [])
         free (in_json);
     }
 
-    zmq_close (subscriber);
+    zmq_close (receiver);
     zmq_ctx_destroy (context);
     return 0;
 }
