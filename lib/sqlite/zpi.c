@@ -1,7 +1,7 @@
 //  Connects SUB socket to tcp://localhost:5556
 
 #include "../lib/zhelpers.h"
-#include "../lib/jsmn.h"
+#include "jsmn.h"
 #include <string.h>
 
 typedef struct s_payload {

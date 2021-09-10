@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 	int count = 0;
 
 	// Create and send json strings
-	for (; quantity > 0; quantity--) {
+	for (quantity; quantity > 0; quantity--) {
 	
 		// Generate time stamp
 		time_t rawtime;

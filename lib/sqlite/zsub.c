@@ -1,8 +1,8 @@
 //  Connects SUB socket to tcp://zpi:5557
 
 #include "../lib/zhelpers.h"
-#include "../lib/sqlite/sqlite3.h"
-#include "../lib/jsmn.h"
+#include "sqlite3.h"
+#include "jsmn.h"
 #include <string.h>
 #include <stdlib.h>
 
