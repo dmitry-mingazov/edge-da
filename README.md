@@ -1,4 +1,15 @@
 # :page_facing_up: Edge#DA
+Project for the Data Analytics course at the University of Camerino.
+
+## Description
+The aim of the project was to understand how a framework like [ZeroMQ](https://zeromq.org) could be used at the edge computing level to make a pub-sub communication system that could improve the Data Analytics pipeline by reducing the latency between sending and receiving data by moving all the computation to the **Edge Computing** level. It was decided to use a framework like zeromq because of its lightness and simplicity as the devices on which everything would run would be equipped with limited resources for computation.
+All the code implementation has been written in **C** and the final architecture of the system is the following:
+<br><br>DIAGRAM IMAGE
+- `zpub`'s responsibility is to generate random data in an IOT-like format and send it to the Edge Computing layer composed of 1 or more `zpi`s.
+- `zpi`'s responsibility is to receive data from `zpub`, filter all the necessary information and send it to `zsub`. If more than one `zpi` is running at
+the same time then the data sent by `zpub` will be splitted among all the `zpi` available using a **Round Robin** scheduling, in order to improve the
+system performances.
+- `zsub`'s responsibility is to receive data from ZPI and to save it inside an [SQlite](https://sqlite.) database.
 
 ## Prerequisites
 - Debian or Ubuntu based Linux distribution*
@@ -41,8 +52,19 @@ One terminal will run `zsub`.
 ```
 out/zsub
 ```
-
-To add: sqlite check
+To check if everything went well just access the database called `test.db` generated thanks to `zsub` using `sqlite3`
+```
+sqlite3
+```
+```
+.open test.db
+```
+and run the following query:
+```
+select count(*)/3 from data;
+```
+If the number that comes out as a result is the same of the sent messages it means it all went right and no messages were lost during the transfer. <br>
+In order to get the right result the number must be divided by 3 because every single message contains **3 different measures** that will be saved individually into the database.
 ## Authors
 - **Luca Cervioni** (115919) \
 luca.cervioni@studenti.unicam.it
