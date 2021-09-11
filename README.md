@@ -2,7 +2,7 @@
 Project for the Data Analytics course at the University of Camerino.
 
 ## Description
-The aim of the project was to understand how a framework like [ZeroMQ](https://zeromq.org) could be used at the edge computing level to make a pub-sub communication system that could improve the Data Analytics pipeline by reducing the latency between sending and receiving data by moving all the computation to the **Edge Computing** level. It was decided to use a framework like zeromq because of its lightness and simplicity as the devices on which everything would run would be equipped with limited resources for computation.
+The aim of the project was to understand how a framework like [ZeroMQ](https://zeromq.org) could be used to make a pub-sub communication system that could improve the data analytics pipeline by reducing the latency between sending and receiving data by moving all the computation to the **Edge Computing** level. It was decided to use a framework like [ZeroMQ](https://zeromq.org) because of its lightness and simplicity as the devices on which everything would run would be equipped with limited resources for computation.
 All the code implementation has been written in **C** and the final architecture of the system is the following:
 <br><br>
 ![](presentation/diagram.png)
