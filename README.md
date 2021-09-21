@@ -2,16 +2,16 @@
 Project for the Data Analytics course at the University of Camerino.
 
 ## Description
-The project goal was to understand how a framework like [ZeroMQ](https://zeromq.org) could be used to move data computation from the cloud to the edge. This practice is called "Edge Computing".
+The project goal was to understand how a framework like [ZeroMQ](https://zeromq.org) could be used to move data computation from the cloud to the edge, the closest level to where the data is generated. 
 
-ZeroMQ provided to be an interesting choice due to its lightness and simplicity, as it should run on devices with limited resources.
+ZeroMQ provided to be an interesting choice due to its lightness and simplicity, as the designed system should run on devices with limited resources.
 
 The framework was used in its C implementation, with the following architecture:
 
 ![](presentation/diagram.png)
-- `zpub`, is a node which is responsible to send data to the Edge Computing layer;
-- `Edge Computing`, is a cluster composed by several nodes (running the same executable), which are responsible to filter the information and forward it to `zsub`. It is noticeable how the data arrives to this layer: `zpub` will distribute it evenly using a **Round Robin** scheduling;
-- `zsub`, which is responsible to store the data received from the `Edge Computing` layer into an [SQlite](https://sqlite) database.
+- `zpub`, a node which is responsible to send data to the Edge Computing layer;
+- `Edge Computing`, a cluster composed by several nodes (running the same executable, `zpi`), which are responsible to filter the information and forward it to `zsub`. It is noticeable how the data arrives to this layer: `zpub` will distribute it evenly using a **Round Robin** scheduling;
+- `zsub`, a node which is responsible to store the data received from the `Edge Computing` layer into an [SQlite](https://sqlite) database.
 
 ## Prerequisites
 - Debian or Ubuntu based Linux distribution*
@@ -64,7 +64,7 @@ select count(*)/3 from data;
 ```
 If the number that comes out as a result is the same of the sent messages the communication went through without any loss.
 
-*\*the count result in the query is divided by 3 because any message sent by `zpub` is then split into three messages by `zpi`.*
+*Note: the count result in the query is divided by 3 because any message sent by `zpub` is then split into three messages by `zpi`.*
 
 ## Authors
 - **Luca Cervioni** (115919) \
